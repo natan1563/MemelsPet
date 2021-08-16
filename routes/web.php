@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CsvController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home', compact('teste'));
+    return view('home');
+});
+
+Route::prefix('relatorio')->group(function () {
+    Route::post('cliente', [CsvController::class, 'getRelatorioCliente']);
+    Route::post('animal', [CsvController::class,  'getRelatorioAnimal']);
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
