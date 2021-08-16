@@ -9,5 +9,5 @@ class Animal extends Model
 
     protected $table = 'Animal';
 
-    protected $timestamps = false;
+    public $timestamps = false;
 }
