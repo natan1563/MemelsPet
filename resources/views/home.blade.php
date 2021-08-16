@@ -1,23 +1,29 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <title>Memel's Pet</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center text-secondary mt-3">Memel's Pet</h1>
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+        <div class="row col-md-12 text-center mt-3">
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+            <form method="post" action="/relatorio/cliente" enctype="multipart/form-data">
+                @csrf
+                    <input type="submit" class="btn btn-info text-light m-3" value="Relatorio cliente">
+            </form>
 
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
+            <form action="/relatorio/animal" method="post" enctype="multipart/form-data">
+                @csrf
+                <input type="submit" class="btn btn-secondary text-light m-3" value="Relatorio animais">
+            </form>
+
         </div>
     </div>
-</div>
-@endsection
+</body>
+</html>
