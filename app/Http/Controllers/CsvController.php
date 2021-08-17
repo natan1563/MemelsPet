@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Animal;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use League\Csv\Reader;
 use League\Csv\Writer;
 
 class CsvController extends Controller
@@ -20,8 +21,6 @@ class CsvController extends Controller
             'Telefone2',
             'Email'
         ]);
-
-        return true;
     }
 
     public function getRelatorioAnimal()
@@ -35,27 +34,35 @@ class CsvController extends Controller
             'HistoricoClinico',
             'Nascimento'
         ]);
-
-        return true;
     }
 
     private function gerarRelatorioCompleto($dados, $colunas)
     {
         $dados = json_decode($dados);
-        $csv   = Writer::createFromString("");
+        $csv   = Writer::createFromString();
         $csv->insertOne($colunas);
 
         foreach($dados as $campos) {
             $linha = [];
 
-            foreach ($campos as $campo) {
+            foreach ($campos as $campo)
                 $linha[] = $campo;
-            }
 
             $csv->insertOne($linha);
         }
 
         $idUnico = uniqid();
         $csv->output("relatorio_{$idUnico}.csv");
+    }
+
+    public function setRelatorioCliente(Request $request)
+    {
+        $csv = Reader::createFromPath($request->file('arquivoCsv')->getPathname())->setHeaderOffset(0);
+
+        foreach ($csv as $data) {
+           Cliente::create($data);
+        }
+
+        return view('home');
     }
 }
