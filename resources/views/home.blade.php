@@ -12,17 +12,21 @@
         <h1 class="text-center text-secondary mt-3">Memel's Pet</h1>
 
         <div class="row col-md-12 text-center mt-3">
-
-            <form method="post" action="/relatorio/cliente" enctype="multipart/form-data">
+            <form action="/relatorio/cliente" method="post" enctype="multipart/form-data">
                 @csrf
-                    <input type="submit" class="btn btn-info text-light m-3" value="Relatorio cliente">
+                <input type="file" name="arquivoCsv" id="arquivoCsv">
+                <button class="btn btn-success">Enviar Relatório</button>
+            </form>
+        </div>
+
+        <div class="row col-md-12 mt-5">
+            <form method="get" action="/relatorio/cliente">
+                <input type="submit" class="btn btn-info text-light m-3" value="Relatorio cliente">
             </form>
 
-            <form action="/relatorio/animal" method="post" enctype="multipart/form-data">
-                @csrf
+            <form action="/relatorio/animal" method="get">
                 <input type="submit" class="btn btn-secondary text-light m-3" value="Relatorio animais">
             </form>
-
         </div>
     </div>
 </body>
