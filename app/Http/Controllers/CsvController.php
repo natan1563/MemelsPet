@@ -55,7 +55,7 @@ class CsvController extends Controller
         $csv->output("relatorio_{$idUnico}.csv");
     }
 
-    public function setRelatorioCliente(Request $request)
+    public function setClientes(Request $request)
     {
         $csv = Reader::createFromPath($request->file('arquivoCsv')->getPathname())->setHeaderOffset(0);
 
