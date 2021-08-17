@@ -10,11 +10,11 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center text-secondary mt-3">Memel's Pet</h1>
-        <div class="row col-md-12 justify-content-center mt-5">
-            <div class="col-md-6">
+        <h1 class="text-center text-secondary my-5">Memel's Pet</h1>
+        <div class="row col-md-12 mt-5">
+            <div class="row col-md-6 justify-content-center">
                 <div class="card text-center" style="width: 18rem;">
-                    <img class="card-img-top" src="..." alt="Card image cap">
+                    <img class="card-img-top" width="200" height="200" src="{{ asset('image/veterinaria.png')}}" alt="Card image cap">
                     <div class="card-body">
                     <h5 class="card-title font-weight-bold">Controle de clientes</h5>
                     <p class="card-text">Area personalizada para controle de dados de clientes.</p>
@@ -55,9 +55,9 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="row col-md-6 justify-content-center">
                 <div class="card text-center" style="width: 18rem;">
-                    <img class="card-img-top" src="..." alt="Card image cap">
+                    <img class="card-img-top" width="200" height="200" src="{{ asset('image/pet.jpg') }}" alt="Card image cap">
                     <div class="card-body">
                       <h5 class="card-title font-weight-bold">Controle de animais</h5>
                       <p class="card-text">Area personalizada para controle de dados dos animais.</p>
