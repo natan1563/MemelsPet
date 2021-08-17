@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Animal;
 use App\Models\Cliente;
 use App\Models\Contatos;
+use App\Models\Especies;
 use App\Models\Pessoas;
 use Illuminate\Http\Request;
 use League\Csv\Reader;
@@ -63,7 +64,7 @@ class CsvController extends Controller
 
         foreach ($csv as $data) {
 
-            Pessoas::create(json_decode(strtolower(json_encode($data)), true));
+            Pessoas::create($this->formatToCreate($data));
 
             $contatos = [
                 $data['Telefone1'],
@@ -97,18 +98,37 @@ class CsvController extends Controller
                 if (filter_var($contato, FILTER_VALIDATE_EMAIL)) $tbContatos->save();
             }
         }
-        
+
         return redirect('/');
     }
 
     public function setAnimais(Request $request)
     {
-        $csv = Reader::createFromPath($request->file('arquivoCsv')->getPathname())->setHeaderOffset(0);
+        $csv = Reader::createFromPath($request->file('arquivoCsvAnimais')->getPathname())->setHeaderOffset(0);
 
         foreach ($csv as $data) {
-           Cliente::create($data);
+
+            $especies      = new Especies;
+            $especieAnimal = function($especie) use($especies) {
+                return $especies->where('nome', $especie)->first();
+            };
+
+            $especie = $especieAnimal($data['Especie']);
+
+            if (is_null($especie)) {
+                $especies->nome = $data['Especie'];
+                $especies->save();
+                $especie = $especieAnimal($data['Especie']);
+            }
+
+
         }
 
         return redirect('/');
+    }
+
+    private function formatToCreate($data)
+    {
+        return json_decode(strtolower(json_encode($data)), true);
     }
 }
