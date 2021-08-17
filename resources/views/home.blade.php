@@ -39,7 +39,7 @@
                     <li class="list-group-item">
                         <form action="/relatorio/cliente" method="post" enctype="multipart/form-data">
                             @csrf
-                            <input type="file" class="custom-file-input" name="arquivoCsv" id="arquivoCsv">
+                            <input type="file" class="custom-file-input" name="arquivoCsv" id="arquivoCsv" required>
                             <label for="arquivoCsv" class="custom-file-label">Procure seu anexo</label>
 
                             <div class="row justify-content-center">
@@ -82,7 +82,7 @@
                       <li class="list-group-item">
                         <form action="/relatorio/animal" method="post" enctype="multipart/form-data">
                             @csrf
-                            <input type="file" class="custom-file-input" name="arquivoCsvAnimais" id="arquivoCsvAnimais">
+                            <input type="file" class="custom-file-input" name="arquivoCsvAnimais" id="arquivoCsvAnimais" required>
                             <label for="arquivoCsvAnimais" class="custom-file-label">Procure seu anexo</label>
 
                             <div class="row justify-content-center">
