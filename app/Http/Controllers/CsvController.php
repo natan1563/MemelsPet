@@ -87,8 +87,8 @@ class CsvController extends Controller
 
                 if (in_array($tbContatos->tipo, ['celular', 'fixo'])){
                     $nonoDigito = ($tbContatos->tipo == 'celular' && preg_match('/^(\(?\d{2}\)?\s?)(\d{4})\-?(\d{4})$/', $contato)) ? 9 : '';
-                    $contato = preg_replace('/^(\(?\d{2}\)?)\s?(\d{4,5})\-?(\d{4})$/', "$1 {$nonoDigito}$2-$3", $contato);
-                    $tbContatos->contato = preg_replace('/^(\d{2})\s?(\d{4,5})\-?(\d{4})$/', '($1) 9$2-$3', $contato);
+                    $contato = preg_replace('/^(\(?\d{2}\)?)\s?(\d{4,5})\-?(\d{4})$/', "$1 $2-$3", $contato);
+                    $tbContatos->contato = preg_replace('/^(\d{2})\s?(\d{4,5})\-?(\d{4})$/', "($1) {$nonoDigito}$2-$3", $contato);
 
                     $tbContatos->save();
                     continue;
@@ -97,7 +97,7 @@ class CsvController extends Controller
                 if (filter_var($contato, FILTER_VALIDATE_EMAIL)) $tbContatos->save();
             }
         }
-
+        
         return redirect('/');
     }
 
