@@ -7,6 +7,7 @@ use App\Models\Cliente;
 use App\Models\Contatos;
 use App\Models\Especies;
 use App\Models\Pessoas;
+use App\Models\Racas;
 use Illuminate\Http\Request;
 use League\Csv\Reader;
 use League\Csv\Writer;
@@ -121,6 +122,19 @@ class CsvController extends Controller
                 $especie = $especieAnimal($data['Especie']);
             }
 
+            $racas       = new Racas;
+            $racasAnimal = function($raca) use($racas) {
+                return $racas->where('nome', $raca)->first();
+            };
+
+            $raca = $racasAnimal($data['Raca']);
+            
+            if (is_null($raca)) {
+                $racas->nome       = $data['Raca'];
+                $racas->especie_id = $especie->id;
+                $racas->save();
+                $raca = $racasAnimal($data['Raca']);
+            }
 
         }
 
