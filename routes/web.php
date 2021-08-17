@@ -19,8 +19,11 @@ Route::get('/', function () {
 });
 
 Route::prefix('relatorio')->group(function () {
-    Route::post('cliente', [CsvController::class, 'getRelatorioCliente']);
-    Route::post('animal', [CsvController::class,  'getRelatorioAnimal']);
+    Route::get('cliente', [CsvController::class, 'getRelatorioCliente']);
+    Route::post('cliente', [CsvController::class, 'setClientes']);
+
+    Route::get('animal', [CsvController::class,  'getRelatorioAnimal']);
+    Route::post('animal', [CsvController::class,  'setAnimais']);
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
