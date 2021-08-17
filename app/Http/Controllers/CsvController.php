@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Animal;
 use App\Models\Cliente;
+use App\Models\Contatos;
+use App\Models\Pessoas;
 use Illuminate\Http\Request;
 use League\Csv\Reader;
 use League\Csv\Writer;
@@ -60,9 +62,53 @@ class CsvController extends Controller
         $csv = Reader::createFromPath($request->file('arquivoCsv')->getPathname())->setHeaderOffset(0);
 
         foreach ($csv as $data) {
+
+            Pessoas::create(json_decode(strtolower(json_encode($data)), true));
+
+            $contatos = [
+                $data['Telefone1'],
+                $data['Telefone2'],
+                $data['Email'],
+            ];
+
+            $tipoContato = [
+                'celular',
+                'fixo',
+                'email'
+            ];
+
+            $countContato = 0;
+
+            foreach ($contatos as $contato) {
+                $tbContatos = new Contatos();
+                $tbContatos->pessoa_id    = $data['Id'];
+                $tbContatos->tipo         = $tipoContato[$countContato++];
+                $tbContatos->contato      = $contato;
+
+                if (in_array($tbContatos->tipo, ['celular', 'fixo'])){
+                    $nonoDigito = ($tbContatos->tipo == 'celular' && preg_match('/^(\(?\d{2}\)?\s?)(\d{4})\-?(\d{4})$/', $contato)) ? 9 : '';
+                    $contato = preg_replace('/^(\(?\d{2}\)?)\s?(\d{4,5})\-?(\d{4})$/', "$1 {$nonoDigito}$2-$3", $contato);
+                    $tbContatos->contato = preg_replace('/^(\d{2})\s?(\d{4,5})\-?(\d{4})$/', '($1) 9$2-$3', $contato);
+
+                    $tbContatos->save();
+                    continue;
+                }
+
+                if (filter_var($contato, FILTER_VALIDATE_EMAIL)) $tbContatos->save();
+            }
+        }
+
+        return redirect('/');
+    }
+
+    public function setAnimais(Request $request)
+    {
+        $csv = Reader::createFromPath($request->file('arquivoCsv')->getPathname())->setHeaderOffset(0);
+
+        foreach ($csv as $data) {
            Cliente::create($data);
         }
 
-        return view('home');
+        return redirect('/');
     }
 }
