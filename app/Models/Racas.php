@@ -9,7 +9,7 @@ class Racas extends Model
 {
     use HasFactory;
 
-    protected $table    = 'especies';
+    protected $table    = 'racas';
 
     protected $fillable = ['id', 'especie_id', 'nome'];
 
