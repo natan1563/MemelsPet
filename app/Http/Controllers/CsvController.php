@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Animais;
 use App\Models\Animal;
 use App\Models\Cliente;
 use App\Models\Contatos;
@@ -89,7 +90,7 @@ class CsvController extends Controller
 
                 if (in_array($tbContatos->tipo, ['celular', 'fixo'])){
                     $nonoDigito = ($tbContatos->tipo == 'celular' && preg_match('/^(\(?\d{2}\)?\s?)(\d{4})\-?(\d{4})$/', $contato)) ? 9 : '';
-                    $contato = preg_replace('/^(\(?\d{2}\)?)\s?(\d{4,5})\-?(\d{4})$/', "$1 $2-$3", $contato);
+                    $contato    = preg_replace('/^(\(?\d{2}\)?)\s?(\d{4,5})\-?(\d{4})$/', "$1 $2-$3", $contato);
                     $tbContatos->contato = preg_replace('/^(\d{2})\s?(\d{4,5})\-?(\d{4})$/', "($1) {$nonoDigito}$2-$3", $contato);
 
                     $tbContatos->save();
@@ -128,7 +129,7 @@ class CsvController extends Controller
             };
 
             $raca = $racasAnimal($data['Raca']);
-            
+
             if (is_null($raca)) {
                 $racas->nome       = $data['Raca'];
                 $racas->especie_id = $especie->id;
@@ -136,6 +137,15 @@ class CsvController extends Controller
                 $raca = $racasAnimal($data['Raca']);
             }
 
+            if (!is_null(Pessoas::firstWhere('id', $data['IdCliente']))) {
+                $animais = new Animais;
+                $animais->pessoa_id  = $data['IdCliente'];
+                $animais->especie_id = $especie->id;
+                $animais->raca_id    = $raca->id;
+                $animais->nome       = $data['Nome'];
+                $animais->nascimento = date('Y-m-d', strtotime($data['Nascimento']));
+                $animais->save();
+            }
         }
 
         return redirect('/');
