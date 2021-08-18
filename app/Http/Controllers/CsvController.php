@@ -33,8 +33,8 @@ class CsvController extends Controller
         $this->gerarRelatorioCompleto(Animal::all(), [
             'Id',
             'IdCliente',
-            'Raca',
             'Nome',
+            'Raca',
             'Especie',
             'HistoricoClinico',
             'Nascimento'
